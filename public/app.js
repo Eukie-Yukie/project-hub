@@ -1,8 +1,7 @@
 /* ==========================================================
    PROJECT HUB - FULL MONGODB ATLAS CONNECTED CLIENT
-   ========================================================== */
+   ========================================================= */
 
-// Dynamically sets the API origin (works seamlessly on localhost and Vercel domains)
 const API_BASE = window.location.origin + "/api";
 
 let currentUser = null;
@@ -11,7 +10,7 @@ let customCategories = ["3D / Blender", "Web Dev", "Networking", "System", "Game
 let activeProjectId = null;
 let activeCategoryFilter = "All";
 let activeTabFilter = "all";
-let isReadOnlyMode = false; // Enabled when accessed via a public share link
+let isReadOnlyMode = false;
 
 // Ephemeral avatar and file uploads
 let tempRegisterAvatarBase64 = null;
@@ -138,23 +137,33 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-/* AUTH CONTROLLER */
+/* AUTH & HERO CONTROLLER */
 function setupAuth() {
+  const heroView = document.getElementById("landing-hero-view");
+  const authCard = document.getElementById("auth-card-box");
+  const heroBtnLogin = document.getElementById("hero-btn-login");
+  const heroBtnSignup = document.getElementById("hero-btn-signup");
+  const btnCloseAuth = document.getElementById("btn-close-auth-card");
+
   const tabLogin = document.getElementById("tab-login-btn");
   const tabRegister = document.getElementById("tab-register-btn");
   const loginForm = document.getElementById("login-form");
   const regForm = document.getElementById("register-form");
   const errBox = document.getElementById("auth-error-msg");
 
-  tabLogin.addEventListener("click", () => {
+  function openLogin() {
+    heroView.classList.add("hidden");
+    authCard.classList.remove("hidden");
     tabLogin.classList.add("active");
     tabRegister.classList.remove("active");
     loginForm.classList.remove("hidden");
     regForm.classList.add("hidden");
     errBox.classList.add("hidden");
-  });
+  }
 
-  tabRegister.addEventListener("click", () => {
+  function openRegister() {
+    heroView.classList.add("hidden");
+    authCard.classList.remove("hidden");
     tabRegister.classList.add("active");
     tabLogin.classList.remove("active");
     regForm.classList.remove("hidden");
@@ -166,6 +175,16 @@ function setupAuth() {
     if (img) { img.src = ""; img.classList.add("hidden"); }
     const placeholder = document.getElementById("avatar-placeholder-icon");
     if (placeholder) placeholder.classList.remove("hidden");
+  }
+
+  heroBtnLogin.addEventListener("click", openLogin);
+  heroBtnSignup.addEventListener("click", openRegister);
+  tabLogin.addEventListener("click", openLogin);
+  tabRegister.addEventListener("click", openRegister);
+
+  btnCloseAuth.addEventListener("click", () => {
+    authCard.classList.add("hidden");
+    heroView.classList.remove("hidden");
   });
 
   const avatarBox = document.getElementById("avatar-preview-box");
@@ -269,8 +288,16 @@ async function loadProfile() {
 
 function showAuthOverlay(show) {
   const overlay = document.getElementById("auth-overlay");
-  if (show) overlay.classList.remove("hidden");
-  else overlay.classList.add("hidden");
+  const heroView = document.getElementById("landing-hero-view");
+  const authCard = document.getElementById("auth-card-box");
+
+  if (show) {
+    overlay.classList.remove("hidden");
+    heroView.classList.remove("hidden");
+    authCard.classList.add("hidden");
+  } else {
+    overlay.classList.add("hidden");
+  }
 }
 
 function updateUserSidebar() {

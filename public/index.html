@@ -14,12 +14,49 @@
     <button class="btn btn-dark btn-sm" id="btn-exit-shared" style="margin-left:auto;">Sign In / My Dashboard</button>
   </div>
 
-  <!-- AUTHENTICATION OVERLAY (LOGIN & REGISTER) -->
+  <!-- LANDING PAGE HERO / AUTH OVERLAY -->
   <div class="auth-overlay" id="auth-overlay">
-    <div class="auth-card">
-      <div class="auth-tabs">
-        <button type="button" class="auth-tab-btn active" id="tab-login-btn">Sign In</button>
-        <button type="button" class="auth-tab-btn" id="tab-register-btn">Create Account</button>
+    <!-- HERO INTRO VIEW -->
+    <div class="landing-hero" id="landing-hero-view">
+      <div class="hero-badge">📁 All-in-One Project Workspace</div>
+      <h1 class="hero-title">The project showcase builder that works for you</h1>
+      <p class="hero-subtitle">
+        Document your progress, organize modular assets, attach source files, and share read-only links with classmates and friends in seconds.
+      </p>
+
+      <div class="hero-cta-group">
+        <button class="btn btn-blue btn-hero" id="hero-btn-signup">Get Started Free &rarr;</button>
+        <button class="btn btn-dark btn-hero" id="hero-btn-login">Already a user? Log In</button>
+      </div>
+
+      <!-- FEATURE HIGHLIGHTS -->
+      <div class="hero-feature-row">
+        <div class="hero-feature-item">
+          <span>⚡</span>
+          <strong>Fast File Sharing</strong>
+          <small>Share read-only folders with downloadable files.</small>
+        </div>
+        <div class="hero-feature-item">
+          <span>🎨</span>
+          <strong>Multi-Discipline</strong>
+          <small>Built for 3D modeling, web apps, networks & code.</small>
+        </div>
+        <div class="hero-feature-item">
+          <span>🔒</span>
+          <strong>Secure Sessions</strong>
+          <small>MongoDB Atlas with verified JWT protection.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP AUTH CARD (Hidden by default until a hero button is clicked) -->
+    <div class="auth-card hidden" id="auth-card-box">
+      <div class="auth-card-header">
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab-btn active" id="tab-login-btn">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tab-register-btn">Create Account</button>
+        </div>
+        <button type="button" class="modal-x-btn" id="btn-close-auth-card" title="Back to home">&times;</button>
       </div>
 
       <div id="auth-error-msg" class="auth-error hidden"></div>

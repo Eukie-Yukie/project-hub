@@ -71,28 +71,131 @@ body { background: var(--bg-app); color: var(--text-main); height: 100vh; overfl
   transform: translateY(0);
 }
 
-/* AUTHENTICATION OVERLAY & MODAL */
+/* AUTHENTICATION OVERLAY & LANDING HERO */
 .auth-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(8, 10, 16, 0.88);
-  backdrop-filter: blur(8px);
+  background: rgba(8, 10, 16, 0.94);
+  backdrop-filter: blur(12px);
   z-index: 5000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 20px;
 }
 .auth-overlay.hidden { display: none !important; }
 
+/* LANDING HERO SECTION */
+.landing-hero {
+  max-width: 780px;
+  width: 100%;
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.hero-badge {
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.btn-hero {
+  padding: 12px 24px;
+  font-size: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.hero-feature-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.hero-feature-item {
+  background: rgba(24, 27, 38, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-feature-item span {
+  font-size: 20px;
+}
+
+.hero-feature-item strong {
+  font-size: 13.5px;
+  color: #fff;
+}
+
+.hero-feature-item small {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* POPUP AUTH CARD */
 .auth-card {
   background: #141724;
   border: 1px solid #282f45;
   border-radius: 16px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 26px 24px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 0.25s ease;
+}
+
+.auth-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.auth-card-header .auth-tabs {
+  margin-bottom: 0;
+  flex: 1;
 }
 
 .auth-tabs {
@@ -130,7 +233,7 @@ body { background: var(--bg-app); color: var(--text-main); height: 100vh; overfl
   margin-bottom: 14px;
 }
 
-/* Avatar upload during register & settings */
+/* Avatar upload */
 .avatar-picker-wrap {
   display: flex;
   flex-direction: column;
@@ -249,7 +352,7 @@ body { background: var(--bg-app); color: var(--text-main); height: 100vh; overfl
   width: 100%;
 }
 
-/* HORIZONTAL SCROLLABLE CATEGORY PILLS */
+/* CATEGORY PILLS */
 .cat-pill-row {
   display: flex;
   gap: 6px;
@@ -366,7 +469,7 @@ body { background: var(--bg-app); color: var(--text-main); height: 100vh; overfl
   text-transform: lowercase;
 }
 
-/* FOLDER LIST & ACTIONS */
+/* FOLDER LIST */
 .folder-list {
   flex: 1;
   overflow-y: auto;
@@ -440,7 +543,7 @@ body { background: var(--bg-app); color: var(--text-main); height: 100vh; overfl
   color: #ef4444;
 }
 
-/* USER FOOTER WITH SETTINGS & LOGOUT */
+/* USER FOOTER */
 .user-footer {
   padding: 12px 14px;
   border-top: 1px solid var(--border);
@@ -834,3 +937,15 @@ input:focus, select:focus, textarea:focus { border-color: var(--border-focus); }
 .lightbox-layer.active { display: flex; }
 .lightbox-layer img { max-width: 90vw; max-height: 85vh; border-radius: 8px; }
 .lightbox-x { position: absolute; top: 20px; right: 26px; color: #fff; font-size: 32px; background: transparent; border: none; cursor: pointer; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 28px; }
+  .hero-feature-row { grid-template-columns: 1fr; }
+  .hero-cta-group { flex-direction: column; width: 100%; }
+  .btn-hero { width: 100%; justify-content: center; }
+}

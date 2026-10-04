@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupAuth();
   setupSettingsModal();
   setupShareFeature();
+  setupMobileDrawer();
 
   // Check if viewing via a public share link (e.g., ?share=651fc89...)
   const urlParams = new URLSearchParams(window.location.search);
@@ -66,6 +67,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   attachEventListeners();
 });
 
+/* MOBILE HAMBURGER & DRAWER CONTROLLER */
+function setupMobileDrawer() {
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebar-backdrop");
+  const btnOpen = document.getElementById("btn-open-sidebar");
+  const btnClose = document.getElementById("btn-close-sidebar");
+
+  function openSidebar() {
+    sidebar.classList.add("mobile-open");
+    backdrop.classList.add("active");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("mobile-open");
+    backdrop.classList.remove("active");
+  }
+
+  if (btnOpen) btnOpen.addEventListener("click", openSidebar);
+  if (btnClose) btnClose.addEventListener("click", closeSidebar);
+  if (backdrop) backdrop.addEventListener("click", closeSidebar);
+
+  // Auto-close drawer on mobile when clicking a project item
+  document.getElementById("project-folders-list").addEventListener("click", () => {
+    if (window.innerWidth <= 768) closeSidebar();
+  });
+}
+
 /* PUBLIC SHARED PROJECT LOADER */
 async function loadSharedProject(projectId) {
   isReadOnlyMode = true;
@@ -87,7 +115,6 @@ async function loadSharedProject(projectId) {
     projects = [project];
     activeProjectId = project._id;
 
-    // Display creator information in sidebar footer
     if (project.userId) {
       document.getElementById("sidebar-user-name").innerText = project.userId.name;
       document.getElementById("sidebar-user-email").innerText = "Shared project";
@@ -315,8 +342,8 @@ function updateUserSidebar() {
   } else {
     avatarImg.classList.add("hidden");
     avatarDiv.classList.remove("hidden");
-    const initials = currentUser.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
-    avatarDiv.innerText = initials || "JR";
+    const initials = currentUser.name ? currentUser.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase() : "U";
+    avatarDiv.innerText = initials || "U";
   }
 }
 
@@ -461,13 +488,6 @@ function renderSidebar() {
     });
     catContainer.appendChild(pill);
   });
-
-  catContainer.onwheel = (e) => {
-    if (e.deltaY !== 0) {
-      e.preventDefault();
-      catContainer.scrollLeft += e.deltaY;
-    }
-  };
 
   const folderContainer = document.getElementById("project-folders-list");
   const searchVal = document.getElementById("search-input").value.toLowerCase();
@@ -686,6 +706,23 @@ function attachEventListeners() {
     document.getElementById("lightbox").classList.remove("active");
   });
 
+  // Grid / List View Toggles
+  const actsContainer = document.getElementById("acts-container");
+  const btnGridView = document.getElementById("btn-grid-view");
+  const btnListView = document.getElementById("btn-list-view");
+
+  btnGridView.addEventListener("click", () => {
+    btnGridView.classList.add("active");
+    btnListView.classList.remove("active");
+    actsContainer.classList.remove("list-mode");
+  });
+
+  btnListView.addEventListener("click", () => {
+    btnListView.classList.add("active");
+    btnGridView.classList.remove("active");
+    actsContainer.classList.add("list-mode");
+  });
+
   const catSelect = document.getElementById("p-form-cat-select");
   const catCustom = document.getElementById("p-form-cat-custom");
   catSelect.addEventListener("change", () => {
@@ -745,7 +782,7 @@ function attachEventListeners() {
     reader.readAsDataURL(file);
   });
 
-  // Binary file dropzone (.blend, .zip, .pkt, .fbx, etc.)
+  // Binary file dropzone
   const boxFile = document.getElementById("box-file-drop");
   const inputFile = document.getElementById("input-act-file");
   boxFile.addEventListener("click", () => inputFile.click());

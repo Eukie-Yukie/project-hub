@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupSettingsModal();
   setupShareFeature();
   setupMobileDrawer();
+  setupCategoryHorizontalScroll();
 
   // Check if viewing via a public share link (e.g., ?share=651fc89...)
   const urlParams = new URLSearchParams(window.location.search);
@@ -67,6 +68,51 @@ document.addEventListener("DOMContentLoaded", async () => {
   attachEventListeners();
 });
 
+/* MOUSE WHEEL & DRAG-TO-SCROLL FOR CATEGORY PILLS */
+function setupCategoryHorizontalScroll() {
+  const slider = document.getElementById("category-pills");
+  if (!slider) return;
+
+  // 1. Mouse Scroll Wheel Support (Vertical scroll moves left/right)
+  slider.addEventListener("wheel", (e) => {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      slider.scrollLeft += e.deltaY;
+    }
+  }, { passive: false });
+
+  // 2. Click and Drag to Scroll Support
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("cat-del-btn")) return;
+    isDown = true;
+    slider.classList.add("dragging");
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  slider.addEventListener("mouseleave", () => {
+    isDown = false;
+    slider.classList.remove("dragging");
+  });
+
+  slider.addEventListener("mouseup", () => {
+    isDown = false;
+    slider.classList.remove("dragging");
+  });
+
+  slider.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    slider.scrollLeft = scrollLeft - walk;
+  });
+}
+
 /* MOBILE HAMBURGER & DRAWER CONTROLLER */
 function setupMobileDrawer() {
   const sidebar = document.getElementById("sidebar");
@@ -88,7 +134,6 @@ function setupMobileDrawer() {
   if (btnClose) btnClose.addEventListener("click", closeSidebar);
   if (backdrop) backdrop.addEventListener("click", closeSidebar);
 
-  // Auto-close drawer on mobile when clicking a project item
   document.getElementById("project-folders-list").addEventListener("click", () => {
     if (window.innerWidth <= 768) closeSidebar();
   });
@@ -100,7 +145,6 @@ async function loadSharedProject(projectId) {
   showAuthOverlay(false);
   document.getElementById("shared-view-banner").classList.remove("hidden");
 
-  // Hide edit/create/settings controls for read-only visitors
   document.getElementById("btn-new-project").classList.add("hidden");
   document.getElementById("btn-edit-details").classList.add("hidden");
   document.getElementById("btn-header-delete-proj").classList.add("hidden");

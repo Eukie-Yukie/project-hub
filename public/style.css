@@ -328,7 +328,7 @@ body {
   width: 100%;
 }
 
-/* HORIZONTAL CATEGORY PILLS (TOUCH FRIENDLY) */
+/* HORIZONTAL CATEGORY PILLS (MOUSE WHEEL & DRAG-SCROLLABLE) */
 .cat-pill-row {
   display: flex;
   gap: 6px;
@@ -337,9 +337,16 @@ body {
   overflow-y: hidden;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
 }
-.cat-pill-row::-webkit-scrollbar { height: 3px; }
+.cat-pill-row.dragging {
+  cursor: grabbing;
+}
+.cat-pill-row::-webkit-scrollbar { height: 4px; }
+.cat-pill-row::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
 .cat-pill-row::-webkit-scrollbar-thumb { background: #2a3149; border-radius: 4px; }
+.cat-pill-row::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
 
 .cat-pill {
   flex-shrink: 0;
@@ -354,6 +361,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  user-select: none;
 }
 .cat-pill:hover, .cat-pill.active { background: var(--blue-btn); color: #fff; border-color: var(--blue-btn); }
 
@@ -844,12 +852,10 @@ input[type="text"], input[type="email"], input[type="password"], select, textare
    ANDROID & MOBILE RESPONSIVE ENGINE (WIDTH <= 768px)
    ========================================================== */
 @media (max-width: 768px) {
-  /* Show hamburger button, hide desktop labels to fit width */
   .mobile-menu-btn { display: inline-flex; }
   .mobile-close-btn { display: block; }
   .btn-label-desktop { display: none; }
 
-  /* Transform Sidebar into an off-canvas drawer */
   .sidebar {
     position: fixed;
     top: 0;
@@ -894,7 +900,6 @@ input[type="text"], input[type="email"], input[type="password"], select, textare
     padding: 14px 14px 40px;
   }
 
-  /* Collapse activities into 1 clean vertical column */
   .activities-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -908,7 +913,6 @@ input[type="text"], input[type="email"], input[type="password"], select, textare
     height: 160px;
   }
 
-  /* Collapse modal form columns to prevent horizontal overflow */
   .f-row {
     flex-direction: column;
     gap: 0;
@@ -917,7 +921,6 @@ input[type="text"], input[type="email"], input[type="password"], select, textare
     grid-template-columns: 1fr;
   }
 
-  /* Responsive Landing Hero */
   .hero-title {
     font-size: 26px;
   }
